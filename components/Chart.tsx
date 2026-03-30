@@ -1,6 +1,13 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions } from 'react-native';
-import { VictoryChart, VictoryLine, VictoryTheme, VictoryArea, VictoryAxis } from 'victory-native';
+import { Platform, View, StyleSheet, Dimensions } from 'react-native';
+import { VictoryChart as VictoryChartNative, VictoryLine as VictoryLineNative, VictoryTheme as VictoryThemeNative, VictoryArea as VictoryAreaNative, VictoryAxis as VictoryAxisNative } from 'victory-native';
+import { VictoryChart as VictoryChartWeb, VictoryLine as VictoryLineWeb, VictoryTheme as VictoryThemeWeb, VictoryArea as VictoryAreaWeb, VictoryAxis as VictoryAxisWeb } from 'victory';
+
+const VictoryChart = Platform.OS === 'web' ? VictoryChartWeb : VictoryChartNative;
+const VictoryLine = Platform.OS === 'web' ? VictoryLineWeb : VictoryLineNative;
+const VictoryTheme = Platform.OS === 'web' ? VictoryThemeWeb : VictoryThemeNative;
+const VictoryArea = Platform.OS === 'web' ? VictoryAreaWeb : VictoryAreaNative;
+const VictoryAxis = Platform.OS === 'web' ? VictoryAxisWeb : VictoryAxisNative;
 import { useAppTheme } from '../lib/theme';
 import { WalletBalanceHistory } from '../types';
 
