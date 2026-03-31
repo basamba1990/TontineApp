@@ -16,17 +16,19 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.yourcompany.tontineappv7"
+      "Bund le identifier": "com.basamba1990.tontinea"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.yourcompany.tontineappv7"
+      "package": "com.basamba1990.tontineone"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro",
+      "output": "static"
     },
     "runtimeVersion": {
       "policy": "appVersion"
@@ -35,9 +37,6 @@
       "eas": {
         "projectId": "e6c0dbc2-ddc3-47c1-a01f-7ccbfc64c5b0"
       }
-    },
-    "plugins": [
-      "expo-font"
-    ]
+    }
   }
 }
