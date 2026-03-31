@@ -1,8 +1,8 @@
-# TontineApp V7 - Fintech Ultra Premium 🚀
+# TontineG-One- Fintech Ultra Premium 🚀
 
-Bienvenue dans la version 7 de **TontineApp**, une application fintech multi-pays et multi-devises conçue pour offrir une expérience utilisateur premium avec une interface moderne et des fonctionnalités avancées.
+Bienvenue dans la version TGO de **TontineG-One**, une application fintech multi-pays et multi-devises conçue pour offrir une expérience utilisateur premium avec une interface moderne et des fonctionnalités avancées.
 
-## ✨ Fonctionnalités V7
+## ✨ Fonctionnalités TGO
 
 - 📱 **Expo & React Native** : Architecture moderne basée sur Expo Router.
 - 💎 **UI Ultra Premium** : Effets Glassmorphism, animations fluides et retour haptique.
