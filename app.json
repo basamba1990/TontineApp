@@ -23,7 +23,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.basamba1990.tontineg-one"
+      "package": "com.basamba1990.tontinegone"
     },
     "web": {
       "favicon": "./assets/favicon.png",
