@@ -1,8 +1,9 @@
 {
   "framework": "nextjs",
-  "buildCommand": "npx expo export:web",
+  "buildCommand": "expo build:web",
   "outputDirectory": "web-build",
   "routes": [
-    { "handle": "filesystem" }
+    { "handle": "filesystem" },
+    { "src": "/.*", "dest": "/index.html" }
   ]
 }
