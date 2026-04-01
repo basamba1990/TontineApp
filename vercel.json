@@ -1,7 +1,7 @@
 {
-  "framework": null,
-  "buildCommand": "npx expo prebuild && npx expo build",
-  "outputDirectory": "dist",
+  "framework": "nextjs",
+  "buildCommand": "npx expo export:web",
+  "outputDirectory": "web-build",
   "routes": [
     { "handle": "filesystem" }
   ]
