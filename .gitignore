@@ -1,19 +1,9 @@
 # Node
 node_modules/
-pnpm-lock.yaml
-yarn.lock
-package-lock.json
-
-# Expo
-.expo/
-.expo-shared/
-*.expo.json
 
 # Builds
 android/
 ios/
-build/
-dist/
 
 # Logs
 *.log
