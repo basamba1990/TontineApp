@@ -1,7 +1,7 @@
 {
   "framework": null,
-  "buildCommand": "npx expo export:web",
-  "outputDirectory": "web-build",
+  "buildCommand": "npx expo export",
+  "outputDirectory": "dist",
   "installCommand": "pnpm install",
   "routes": [
     { "handle": "filesystem" },
