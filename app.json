@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "TontineOne",
-    "slug": "tontineone",
+    "name": "TontineG-One",
+    "slug": "tontineg-one",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,14 +16,14 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "Bund le identifier": "com.basamba1990.tontinea"
+      "bundleIdentifier": "com.basamba1990.tontineg-one"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.basamba1990.tontineone"
+      "package": "com.basamba1990.tontineg-one"
     },
     "web": {
       "favicon": "./assets/favicon.png",
