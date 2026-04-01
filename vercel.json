@@ -1,9 +1,8 @@
 {
   "framework": null,
-  "buildCommand": "npx expo export:web",
+  "buildCommand": "npx expo prebuild && npx expo build",
   "outputDirectory": "dist",
   "routes": [
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+    { "handle": "filesystem" }
   ]
 }
