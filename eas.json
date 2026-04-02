@@ -11,13 +11,13 @@
     "preview": {
       "distribution": "internal",
       "android": {
-        "buildType": "apk"       // Build APK pour tester rapidement
+        "buildType": "apk"
       }
     },
     "production": {
-      "distribution": "store",   // Google Play / App Store
+      "distribution": "store",
       "android": {
-        "buildType": "app-bundle" // Génère AAB recommandé par Google Play
+        "buildType": "apk"   // ← forcé pour produire un APK au lieu d'AAB
       },
       "autoIncrement": true
     }

@@ -6,33 +6,47 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
+
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
+
+    "plugins": [
+      "lottie-react-native"
     ],
+
+    "assetBundlePatterns": ["**/*"],
+
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.basamba1990.tontineg-one"
     },
+
     "android": {
+      "package": "com.basamba1990.tontinegone",
+      "versionCode": 1,
+      "minSdkVersion": 21,
+
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.basamba1990.tontinegone"
+
+      "permissions": []
     },
+
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
       "output": "static"
     },
+
     "runtimeVersion": {
       "policy": "appVersion"
     },
+
     "extra": {
       "eas": {
         "projectId": "e6c0dbc2-ddc3-47c1-a01f-7ccbfc64c5b0"
