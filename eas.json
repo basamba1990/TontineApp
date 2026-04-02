@@ -9,9 +9,13 @@
       "distribution": "internal"
     },
     "preview": {
-      "distribution": "internal"
+      "developmentClient": false,
+      "distribution": "internal",
+      "gradleCommand": ":app:assembleDebug"
     },
     "production": {
+      "developmentClient": false,
+      "distribution": "store",
       "autoIncrement": true
     }
   },
