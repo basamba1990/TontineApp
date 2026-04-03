@@ -24,7 +24,6 @@
 
     "android": {
       "package": "com.basamba1990.tontinegone",
-      "versionCode": 1,
       "minSdkVersion": 21,
       "abiFilters": ["armeabi-v7a"],
       "adaptiveIcon": {
