@@ -14,7 +14,12 @@
     },
 
     "plugins": [
-      "lottie-react-native"
+      [
+        "lottie-react-native",
+        {
+          "platforms": ["ios", "android"]
+        }
+      ]
     ],
 
     "assetBundlePatterns": ["**/*"],
@@ -28,6 +33,7 @@
       "package": "com.basamba1990.tontinegone",
       "versionCode": 1,
       "minSdkVersion": 21,
+      "abiFilters": ["armeabi-v7a"],
 
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
