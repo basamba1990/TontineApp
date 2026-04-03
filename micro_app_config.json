@@ -1,0 +1,10 @@
+{
+  "expo": {
+    "plugins": [
+      ["lottie-react-native", {"platforms":["ios","android"]}]
+    ],
+    "android": {
+      "abiFilters": ["armeabi-v7a"]
+    }
+  }
+}

@@ -12,6 +12,10 @@ import { formatCurrency } from '../../lib/currency';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
+// === IMPORT LOTTIE ===
+import LottieJS from '../../components/LottieJS'; 
+import tgAnimation from '../../assets/tg-rotation.json'; // ton JSON Lottie
+
 export default function Dashboard() {
   const { profile } = useUser();
   const { wallets, loading: walletLoading, refreshWallets, chartData } = useWallet();
@@ -43,6 +47,11 @@ export default function Dashboard() {
         <TouchableOpacity style={[styles.notificationBtn, { backgroundColor: colors.accent }]} onPress={() => router.push('/profile')}>
           <MaterialCommunityIcons name="bell-outline" size={24} color={colors.text} />
         </TouchableOpacity>
+      </View>
+
+      {/* === ANIMATION LOTTIE === */}
+      <View style={{ alignItems: 'center', marginBottom: 20 }}>
+        <LottieJS animationData={tgAnimation} width={200} height={200} />
       </View>
 
       <GlassCard style={styles.mainCard}>
