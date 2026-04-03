@@ -34,12 +34,10 @@
       "versionCode": 1,
       "minSdkVersion": 21,
       "abiFilters": ["armeabi-v7a"],
-
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-
       "permissions": []
     },
 
