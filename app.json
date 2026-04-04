@@ -13,7 +13,7 @@
       "backgroundColor": "#ffffff"
     },
 
-    "plugins": [],
+    "plugins": ["expo-router"],
 
     "assetBundlePatterns": ["**/*"],
 
