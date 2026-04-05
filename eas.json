@@ -14,6 +14,10 @@
       "node": "20.0.0",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "VOTRE_URL_SUPABASE",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "VOTRE_CLE_ANON_SUPABASE"
       }
     },
     "production": {
@@ -21,6 +25,10 @@
       "node": "20.0.0",
       "android": {
         "buildType": "apk"
+      },
+      "env": {
+        "EXPO_PUBLIC_SUPABASE_URL": "VOTRE_URL_SUPABASE",
+        "EXPO_PUBLIC_SUPABASE_ANON_KEY": "VOTRE_CLE_ANON_SUPABASE"
       },
       "autoIncrement": true
     }
