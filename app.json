@@ -11,30 +11,39 @@
       "resizeMode": "contain",
       "backgroundColor": "#004d40"
     },
-    "plugins": ["expo-router"],
-    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-build-properties",
+        {
+          "android": {
+            "usesCleartextTraffic": true
+          }
+        }
+      ]
+    ],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.basamba1990.tontineg-one"
+      "bundleIdentifier": "com.basamba1990.tontinegone"
     },
     "android": {
       "package": "com.basamba1990.tontinegone",
       "versionCode": 2,
-      "minSdkVersion": 21,
-      "abiFilters": ["armeabi-v7a"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#004d40"
       },
-      "permissions": []
+      "permissions": [
+        "android.permission.INTERNET"
+      ]
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
       "output": "static"
-    },
-    "runtimeVersion": {
-      "policy": "appVersion"
     },
     "extra": {
       "eas": {
