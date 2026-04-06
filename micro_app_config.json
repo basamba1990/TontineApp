@@ -4,7 +4,7 @@
       ["lottie-react-native", {"platforms":["ios","android"]}]
     ],
     "android": {
-      "abiFilters": ["armeabi-v7a"]
+      "abiFilters": ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
     }
   }
 }
