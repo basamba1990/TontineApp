@@ -45,7 +45,7 @@ export default function LoginScreen() {
           <View style={[styles.logoContainer, { backgroundColor: colors.primary }]}>
             <MaterialCommunityIcons name="wallet" size={48} color="#fff" />
           </View>
-          <Text style={[styles.title, { color: colors.text }]}>TontineApp V7</Text>
+          <Text style={[styles.title, { color: colors.text }]}>Tontine Collateral</Text>
           <Text style={[styles.subtitle, { color: colors.muted }]}>
             {isSignUp ? 'Créez votre compte fintech premium' : 'Bienvenue dans votre espace financier'}
           </Text>
