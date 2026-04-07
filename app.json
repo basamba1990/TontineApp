@@ -2,7 +2,7 @@
   "expo": {
     "name": "TontineG-One",
     "slug": "tontineone",
-    "version": "1.0.1",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -22,32 +22,33 @@
         }
       ]
     ],
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.basamba1990.tontinegone"
     },
     "android": {
       "package": "com.basamba1990.tontinegone",
-      "versionCode": 2,
+      "versionCode": 4,
+      "minSdkVersion": 21,
+      "abiFilters": ["armeabi-v7a"],
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#004d40"
       },
-      "permissions": [
-        "android.permission.INTERNET"
-      ]
+      "permissions": ["android.permission.INTERNET", "android.permission.ACCESS_NETWORK_STATE"]
     },
     "web": {
       "favicon": "./assets/favicon.png",
       "bundler": "metro",
       "output": "static"
     },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
     "extra": {
       "eas": {
-        "projectId": "e6c0dbc2-ddc3-47c1-a01f-7ccbfc64c5b0"
+        "projectId": "4eb1fa98-9390-4e8b-92fc-85ff33f0ee76"
       }
     }
   }
