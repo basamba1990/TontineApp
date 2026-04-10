@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, Pressable } from 'react-native';
 import { useUser } from '../../context/UserContext';
 import { useWallet } from '../../context/WalletContext';
 import { useTransaction } from '../../context/TransactionContext';
@@ -7,14 +7,13 @@ import { useAppTheme } from '../../lib/theme';
 import GlassCard from '../../components/GlassCard';
 import Chart from '../../components/Chart';
 import TransactionItem from '../../components/TransactionItem';
-import PremiumButton from '../../components/PremiumButton';
 import { formatCurrency } from '../../lib/currency';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 // === IMPORT LOTTIE ===
 import LottieJS from '../../components/LottieJS'; 
-import tgAnimation from '../../assets/tg-rotation.json'; // ton JSON Lottie
+import tgAnimation from '../../assets/tg-rotation.json'; 
 
 export default function Dashboard() {
   const { profile } = useUser();
@@ -37,6 +36,7 @@ export default function Dashboard() {
     <ScrollView
       style={[styles.container, { backgroundColor: colors.bg }]}
       contentContainerStyle={styles.content}
+      keyboardShouldPersistTaps="handled"
       refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={colors.primary} />}
     >
       <View style={styles.header}>
@@ -61,26 +61,35 @@ export default function Dashboard() {
         </Text>
         
         <View style={styles.actionRow}>
-          <TouchableOpacity style={styles.actionItem} onPress={() => router.push('/deposit')}>
+          <Pressable 
+            style={({ pressed }) => [styles.actionItem, { opacity: pressed ? 0.5 : 1 }]} 
+            onPress={() => router.push('/deposit')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.primary }]}>
               <MaterialCommunityIcons name="plus" size={24} color="#fff" />
             </View>
             <Text style={[styles.actionText, { color: colors.text }]}>Dépôt</Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          <TouchableOpacity style={styles.actionItem} onPress={() => router.push('/transfer')}>
+          <Pressable 
+            style={({ pressed }) => [styles.actionItem, { opacity: pressed ? 0.5 : 1 }]} 
+            onPress={() => router.push('/transfer')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.secondary }]}>
               <MaterialCommunityIcons name="swap-horizontal" size={24} color="#fff" />
             </View>
             <Text style={[styles.actionText, { color: colors.text }]}>Transfert</Text>
-          </TouchableOpacity>
+          </Pressable>
           
-          <TouchableOpacity style={styles.actionItem} onPress={() => router.push('/withdraw')}>
+          <Pressable 
+            style={({ pressed }) => [styles.actionItem, { opacity: pressed ? 0.5 : 1 }]} 
+            onPress={() => router.push('/withdraw')}
+          >
             <View style={[styles.actionIcon, { backgroundColor: colors.error }]}>
               <MaterialCommunityIcons name="arrow-up" size={24} color="#fff" />
             </View>
             <Text style={[styles.actionText, { color: colors.text }]}>Retrait</Text>
-          </TouchableOpacity>
+          </Pressable>
         </View>
       </GlassCard>
 
@@ -115,90 +124,23 @@ export default function Dashboard() {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 20,
-    paddingTop: 60,
-  },
-  header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 30,
-  },
-  greeting: {
-    fontSize: 16,
-  },
-  name: {
-    fontSize: 24,
-    fontWeight: 'bold',
-  },
-  notificationBtn: {
-    width: 48,
-    height: 48,
-    borderRadius: 14,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  mainCard: {
-    padding: 24,
-    marginBottom: 24,
-  },
-  totalLabel: {
-    fontSize: 14,
-    marginBottom: 8,
-  },
-  totalAmount: {
-    fontSize: 32,
-    fontWeight: 'bold',
-    marginBottom: 24,
-  },
-  actionRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  actionItem: {
-    alignItems: 'center',
-  },
-  actionIcon: {
-    width: 50,
-    height: 50,
-    borderRadius: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: 8,
-  },
-  actionText: {
-    fontSize: 12,
-    fontWeight: '600',
-  },
-  sectionHeader: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    marginBottom: 16,
-    marginTop: 8,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  seeMore: {
-    fontSize: 14,
-    fontWeight: '600',
-  },
-  chartCard: {
-    padding: 0,
-    marginBottom: 24,
-  },
-  transactionsList: {
-    marginBottom: 40,
-  },
-  emptyText: {
-    textAlign: 'center',
-    marginTop: 20,
-    fontStyle: 'italic',
-  },
+  container: { flex: 1 },
+  content: { padding: 20, paddingTop: 60, paddingBottom: 100 },
+  header: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 30 },
+  greeting: { fontSize: 16 },
+  name: { fontSize: 24, fontWeight: 'bold' },
+  notificationBtn: { width: 48, height: 48, borderRadius: 14, alignItems: 'center', justifyContent: 'center' },
+  mainCard: { padding: 24, marginBottom: 24 },
+  totalLabel: { fontSize: 14, marginBottom: 8 },
+  totalAmount: { fontSize: 32, fontWeight: 'bold', marginBottom: 24 },
+  actionRow: { flexDirection: 'row', justifyContent: 'space-between' },
+  actionItem: { alignItems: 'center', flex: 1 },
+  actionIcon: { width: 50, height: 50, borderRadius: 15, alignItems: 'center', justifyContent: 'center', marginBottom: 8 },
+  actionText: { fontSize: 12, fontWeight: '600' },
+  sectionHeader: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginBottom: 16, marginTop: 8 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold' },
+  seeMore: { fontSize: 14, fontWeight: '600' },
+  chartCard: { padding: 0, marginBottom: 24 },
+  transactionsList: { marginBottom: 40 },
+  emptyText: { textAlign: 'center', marginTop: 20, fontStyle: 'italic' },
 });
