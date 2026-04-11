@@ -20,7 +20,7 @@ function NavigationGuard() {
     const inAuthGroup = segments[0] === '(tabs)';
     if (!profile && inAuthGroup) {
       router.replace('/login');
-    } else if (profile && !inAuthGroup) {
+    } else if (profile && !inAuthGroup && segments[0] !== 'deposit' && segments[0] !== 'withdraw' && segments[0] !== 'transfer') {
       router.replace('/(tabs)');
     }
   }, [profile, loading, segments]);

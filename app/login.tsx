@@ -10,6 +10,7 @@ export default function LoginScreen() {
   const { colors } = useAppTheme();
   const router = useRouter();
   const [email, setEmail] = useState('');
+  const [fullName, setFullName] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
@@ -23,7 +24,15 @@ export default function LoginScreen() {
     setLoading(true);
     try {
       if (isSignUp) {
-        const { error } = await supabase.auth.signUp({ email, password });
+        const { error } = await supabase.auth.signUp({ 
+          email, 
+          password,
+          options: {
+            data: {
+              full_name: fullName,
+            }
+          }
+        });
         if (error) throw error;
         Alert.alert('Succès', 'Vérifiez votre email pour confirmer votre compte');
       } else {
@@ -52,6 +61,19 @@ export default function LoginScreen() {
         </View>
 
         <View style={styles.form}>
+          {isSignUp && (
+            <View style={[styles.inputGroup, { backgroundColor: colors.accent }]}>
+              <MaterialCommunityIcons name="account-outline" size={20} color={colors.muted} />
+              <TextInput
+                style={[styles.input, { color: colors.text }]}
+                placeholder="Nom Complet"
+                placeholderTextColor={colors.muted}
+                value={fullName}
+                onChangeText={setFullName}
+              />
+            </View>
+          )}
+
           <View style={[styles.inputGroup, { backgroundColor: colors.accent }]}>
             <MaterialCommunityIcons name="email-outline" size={20} color={colors.muted} />
             <TextInput

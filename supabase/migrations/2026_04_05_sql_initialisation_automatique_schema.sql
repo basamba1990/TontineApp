@@ -63,3 +63,20 @@ $$ LANGUAGE plpgsql SECURITY DEFINER;
 CREATE OR REPLACE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
+
+-- 7. Politiques de sécurité pour les portefeuilles (Wallets)
+CREATE POLICY "Les utilisateurs peuvent voir leurs propres portefeuilles" 
+ON wallets FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Les utilisateurs peuvent créer leurs propres portefeuilles" 
+ON wallets FOR INSERT WITH CHECK (auth.uid() = user_id);
+
+CREATE POLICY "Les utilisateurs peuvent modifier leurs propres portefeuilles" 
+ON wallets FOR UPDATE USING (auth.uid() = user_id);
+
+-- 8. Politiques de sécurité pour les transactions
+CREATE POLICY "Les utilisateurs peuvent voir leurs propres transactions" 
+ON transactions FOR SELECT USING (auth.uid() = user_id);
+
+CREATE POLICY "Les utilisateurs peuvent créer leurs propres transactions" 
+ON transactions FOR INSERT WITH CHECK (auth.uid() = user_id);

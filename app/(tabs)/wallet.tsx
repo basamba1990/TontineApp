@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, RefreshControl, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { supabase } from '../../lib/api';
 import { useWallet } from '../../context/WalletContext';
 import { useAppTheme } from '../../lib/theme';
 import WalletCard from '../../components/WalletCard';
@@ -13,6 +14,42 @@ export default function WalletScreen() {
   const router = useRouter();
   const [refreshing, setRefreshing] = useState(false);
 
+  const handleCreateWallet = () => {
+    Alert.alert(
+      'Créer un Wallet',
+      'Voulez-vous créer un nouveau portefeuille ?',
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { 
+          text: 'Créer', 
+          onPress: async () => {
+            try {
+              const { data: { user } } = await supabase.auth.getUser();
+              if (!user) return;
+
+              const { error } = await supabase
+                .from('wallets')
+                .insert([
+                  { 
+                    user_id: user.id, 
+                    currency: 'XOF', 
+                    balance: 0,
+                    country_code: 'SN'
+                  }
+                ]);
+
+              if (error) throw error;
+              Alert.alert('Succès', 'Wallet créé avec succès');
+              refreshWallets();
+            } catch (error: any) {
+              Alert.alert('Erreur', error.message);
+            }
+          }
+        }
+      ]
+    );
+  };
+
   const onRefresh = async () => {
     setRefreshing(true);
     await refreshWallets();
@@ -23,7 +60,7 @@ export default function WalletScreen() {
     <View style={[styles.container, { backgroundColor: colors.bg }]}>
       <View style={styles.header}>
         <Text style={[styles.title, { color: colors.text }]}>Mes Wallets</Text>
-        <TouchableOpacity style={[styles.addBtn, { backgroundColor: colors.accent }]} onPress={() => {}}>
+        <TouchableOpacity style={[styles.addBtn, { backgroundColor: colors.accent }]} onPress={handleCreateWallet}>
           <MaterialCommunityIcons name="plus" size={24} color={colors.primary} />
         </TouchableOpacity>
       </View>
@@ -43,7 +80,7 @@ export default function WalletScreen() {
             <View style={styles.emptyContainer}>
               <MaterialCommunityIcons name="wallet-outline" size={64} color={colors.muted} />
               <Text style={[styles.emptyText, { color: colors.muted }]}>Aucun wallet trouvé</Text>
-              <PremiumButton title="Créer un wallet" onPress={() => {}} style={styles.emptyBtn} />
+              <PremiumButton title="Créer un wallet" onPress={handleCreateWallet} style={styles.emptyBtn} />
             </View>
           ) : null
         }

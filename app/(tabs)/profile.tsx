@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Switch } from 'react-native';
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Switch, Alert } from 'react-native';
 import { useUser } from '../../context/UserContext';
 import { useAppTheme } from '../../lib/theme';
 import GlassCard from '../../components/GlassCard';
@@ -7,9 +7,49 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 export default function ProfileScreen() {
-  const { profile, signOut } = useUser();
+  const { profile, signOut, refreshProfile } = useUser();
   const { colors, isDark } = useAppTheme();
   const router = useRouter();
+
+  const handleUpdateProfile = async (field: string, currentValue: string) => {
+    Alert.prompt(
+      `Modifier ${field}`,
+      `Entrez votre nouveau ${field.toLowerCase()}`,
+      [
+        { text: 'Annuler', style: 'cancel' },
+        { 
+          text: 'Enregistrer', 
+          onPress: async (newValue) => {
+            if (!newValue) return;
+            try {
+              const updateData: any = {};
+              if (field === 'Nom Complet') updateData.full_name = newValue;
+              if (field === 'Téléphone') updateData.phone_number = newValue;
+              if (field === 'Pays') updateData.country_code = newValue;
+              if (field === 'Devise Principale') updateData.preferred_currency = newValue;
+
+              const { error } = await supabase
+                .from('profiles')
+                .update(updateData)
+                .eq('id', profile?.id);
+              
+              if (error) throw error;
+              Alert.alert('Succès', 'Profil mis à jour');
+              refreshProfile();
+            } catch (error: any) {
+              Alert.alert('Erreur', error.message);
+            }
+          }
+        }
+      ],
+      'plain-text',
+      currentValue
+    );
+  };
+
+  const handleImageUpload = () => {
+    Alert.alert('Upload Image', 'Cette fonctionnalité nécessite l\'intégration de expo-image-picker.');
+  };
 
   const ProfileItem = ({ icon, label, value, onPress, color }: any) => (
     <TouchableOpacity 
@@ -45,7 +85,10 @@ export default function ProfileScreen() {
               </Text>
             </View>
           )}
-          <TouchableOpacity style={[styles.editAvatarBtn, { backgroundColor: colors.primary }]}>
+          <TouchableOpacity 
+            style={[styles.editAvatarBtn, { backgroundColor: colors.primary }]}
+            onPress={handleImageUpload}
+          >
             <MaterialCommunityIcons name="camera" size={16} color="#fff" />
           </TouchableOpacity>
         </View>
@@ -58,10 +101,10 @@ export default function ProfileScreen() {
       </View>
 
       <GlassCard style={styles.section}>
-        <ProfileItem icon="account-outline" label="Nom Complet" value={profile?.full_name} onPress={() => {}} />
-        <ProfileItem icon="phone-outline" label="Téléphone" value={profile?.phone_number || 'Non renseigné'} onPress={() => {}} />
-        <ProfileItem icon="earth" label="Pays" value={profile?.country_code || 'Sénégal'} onPress={() => {}} />
-        <ProfileItem icon="cash" label="Devise Principale" value={profile?.preferred_currency || 'XOF'} onPress={() => {}} />
+        <ProfileItem icon="account-outline" label="Nom Complet" value={profile?.full_name} onPress={() => handleUpdateProfile('Nom Complet', profile?.full_name || '')} />
+        <ProfileItem icon="phone-outline" label="Téléphone" value={profile?.phone_number || 'Non renseigné'} onPress={() => handleUpdateProfile('Téléphone', profile?.phone_number || '')} />
+        <ProfileItem icon="earth" label="Pays" value={profile?.country_code || 'Sénégal'} onPress={() => handleUpdateProfile('Pays', profile?.country_code || 'SN')} />
+        <ProfileItem icon="cash" label="Devise Principale" value={profile?.preferred_currency || 'XOF'} onPress={() => handleUpdateProfile('Devise Principale', profile?.preferred_currency || 'XOF')} />
       </GlassCard>
 
       <Text style={[styles.sectionTitle, { color: colors.muted }]}>Paramètres</Text>
@@ -75,8 +118,8 @@ export default function ProfileScreen() {
           </View>
           <Switch value={isDark} onValueChange={() => {}} trackColor={{ true: colors.primary }} />
         </View>
-        <ProfileItem icon="shield-lock-outline" label="Sécurité" value="PIN & Biométrie" onPress={() => {}} />
-        <ProfileItem icon="bell-outline" label="Notifications" value="Activées" onPress={() => {}} />
+        <ProfileItem icon="shield-lock-outline" label="Sécurité" value="PIN & Biométrie" onPress={() => Alert.alert('Sécurité', 'Paramètres de sécurité bientôt disponibles')} />
+        <ProfileItem icon="bell-outline" label="Notifications" value="Activées" onPress={() => Alert.alert('Notifications', 'Paramètres de notifications bientôt disponibles')} />
       </GlassCard>
 
       <TouchableOpacity style={styles.logoutBtn} onPress={signOut}>
