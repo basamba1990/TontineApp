@@ -6,7 +6,7 @@ import GlassCard from '../components/GlassCard';
 import PremiumButton from '../components/PremiumButton';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { callEdgeFunction } from '../lib/api';
+import { supabase } from '../lib/api';
 
 export default function TransferScreen() {
   const { wallets, refreshWallets } = useWallet();
@@ -34,20 +34,74 @@ export default function TransferScreen() {
 
     setLoading(true);
     try {
-      const result = await callEdgeFunction('transfer-money', {
-        wallet_id: selectedWallet,
-        amount: Number(amount),
-        receiver_email: receiverEmail,
-        currency: wallet?.currency || 'XOF',
-      });
+      const transferAmount = Number(amount);
+      
+      // 1. Trouver le destinataire par email
+      const { data: receiverProfile, error: receiverError } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('email', receiverEmail)
+        .single();
 
-      if (result.success) {
-        Alert.alert('Succès', 'Transfert effectué avec succès !');
-        await refreshWallets();
-        router.back();
-      } else {
-        throw new Error(result.error || 'Une erreur est survenue');
-      }
+      if (receiverError || !receiverProfile) throw new Error('Destinataire non trouvé');
+
+      // 2. Trouver le wallet du destinataire (même devise)
+      const { data: receiverWallet, error: walletError } = await supabase
+        .from('wallets')
+        .select('id, balance')
+        .eq('user_id', receiverProfile.id)
+        .eq('currency', wallet?.currency || 'XOF')
+        .single();
+
+      if (walletError || !receiverWallet) throw new Error('Le destinataire n\'a pas de wallet dans cette devise');
+
+      // 3. Débiter l'expéditeur
+      const { error: debitError } = await supabase
+        .from('wallets')
+        .update({ balance: (wallet?.balance || 0) - transferAmount })
+        .eq('id', selectedWallet);
+
+      if (debitError) throw debitError;
+
+      // 4. Créditer le destinataire
+      const { error: creditError } = await supabase
+        .from('wallets')
+        .update({ balance: (receiverWallet.balance || 0) + transferAmount })
+        .eq('id', receiverWallet.id);
+
+      if (creditError) throw creditError;
+
+      // 5. Créer les transactions
+      const { data: { user } } = await supabase.auth.getUser();
+      const { error: txError } = await supabase
+        .from('transactions')
+        .insert([
+          {
+            user_id: user?.id,
+            wallet_id: selectedWallet,
+            amount: -transferAmount,
+            currency: wallet?.currency || 'XOF',
+            type: 'transfer',
+            status: 'completed',
+            description: `Transfert vers ${receiverEmail}`,
+            receiver_id: receiverProfile.id
+          },
+          {
+            user_id: receiverProfile.id,
+            wallet_id: receiverWallet.id,
+            amount: transferAmount,
+            currency: wallet?.currency || 'XOF',
+            type: 'transfer',
+            status: 'completed',
+            description: `Reçu de ${user?.email}`,
+          }
+        ]);
+
+      if (txError) throw txError;
+
+      Alert.alert('Succès', 'Transfert effectué avec succès !');
+      await refreshWallets();
+      router.back();
     } catch (error: any) {
       Alert.alert('Erreur', error.message);
     } finally {

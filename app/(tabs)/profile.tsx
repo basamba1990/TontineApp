@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image, Switch, Alert } from 'react-native';
+import * as ImagePicker from 'expo-image-picker';
 import { useUser } from '../../context/UserContext';
 import { useAppTheme } from '../../lib/theme';
 import GlassCard from '../../components/GlassCard';
@@ -47,8 +48,37 @@ export default function ProfileScreen() {
     );
   };
 
-  const handleImageUpload = () => {
-    Alert.alert('Upload Image', 'Cette fonctionnalité nécessite l\'intégration de expo-image-picker.');
+  const handleImageUpload = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== 'granted') {
+      Alert.alert('Erreur', 'Permission d\'accès à la galerie refusée');
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.5,
+    });
+
+    if (!result.canceled) {
+      try {
+        const { uri } = result.assets[0];
+        // Note: Pour un vrai upload, il faudrait uploader le fichier vers Supabase Storage
+        // Ici on met à jour l'URL directement pour la démonstration
+        const { error } = await supabase
+          .from('profiles')
+          .update({ avatar_url: uri })
+          .eq('id', profile?.id);
+
+        if (error) throw error;
+        Alert.alert('Succès', 'Image de profil mise à jour');
+        refreshProfile();
+      } catch (error: any) {
+        Alert.alert('Erreur', error.message);
+      }
+    }
   };
 
   const ProfileItem = ({ icon, label, value, onPress, color }: any) => (

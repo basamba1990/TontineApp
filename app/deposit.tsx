@@ -39,17 +39,31 @@ export default function DepositScreen() {
     setLoading(true);
     try {
       const wallet = wallets.find(w => w.id === selectedWallet);
+      const depositAmount = Number(amount);
       
-      // Appel à votre Edge Function ou mise à jour directe
-      const { data, error } = await supabase.functions.invoke('deposit', {
-        body: {
-          wallet_id: selectedWallet,
-          amount: Number(amount),
-          currency: wallet?.currency || 'XOF',
-        }
-      });
+      // 1. Mettre à jour le solde du wallet
+      const { error: walletError } = await supabase
+        .from('wallets')
+        .update({ balance: (wallet?.balance || 0) + depositAmount })
+        .eq('id', selectedWallet);
 
-      if (error) throw error;
+      if (walletError) throw walletError;
+
+      // 2. Créer une transaction
+      const { data: { user } } = await supabase.auth.getUser();
+      const { error: txError } = await supabase
+        .from('transactions')
+        .insert([{
+          user_id: user?.id,
+          wallet_id: selectedWallet,
+          amount: depositAmount,
+          currency: wallet?.currency || 'XOF',
+          type: 'deposit',
+          status: 'completed',
+          description: 'Dépôt direct'
+        }]);
+
+      if (txError) throw txError;
 
       Alert.alert('Succès', 'Dépôt effectué avec succès !');
       await refreshWallets();

@@ -6,7 +6,7 @@ import GlassCard from '../components/GlassCard';
 import PremiumButton from '../components/PremiumButton';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
-import { callEdgeFunction } from '../lib/api';
+import { supabase } from '../lib/api';
 
 export default function WithdrawScreen() {
   const { wallets, refreshWallets } = useWallet();
@@ -29,19 +29,35 @@ export default function WithdrawScreen() {
 
     setLoading(true);
     try {
-      const result = await callEdgeFunction('withdraw', {
-        wallet_id: selectedWallet,
-        amount: Number(amount),
-        currency: wallet?.currency || 'XOF',
-      });
+      const withdrawAmount = Number(amount);
+      
+      // 1. Mettre à jour le solde du wallet
+      const { error: walletError } = await supabase
+        .from('wallets')
+        .update({ balance: (wallet?.balance || 0) - withdrawAmount })
+        .eq('id', selectedWallet);
 
-      if (result.success) {
-        Alert.alert('Succès', 'Retrait effectué avec succès !');
-        await refreshWallets();
-        router.back();
-      } else {
-        throw new Error(result.error || 'Une erreur est survenue');
-      }
+      if (walletError) throw walletError;
+
+      // 2. Créer une transaction
+      const { data: { user } } = await supabase.auth.getUser();
+      const { error: txError } = await supabase
+        .from('transactions')
+        .insert([{
+          user_id: user?.id,
+          wallet_id: selectedWallet,
+          amount: -withdrawAmount,
+          currency: wallet?.currency || 'XOF',
+          type: 'withdraw',
+          status: 'completed',
+          description: 'Retrait direct'
+        }]);
+
+      if (txError) throw txError;
+
+      Alert.alert('Succès', 'Retrait effectué avec succès !');
+      await refreshWallets();
+      router.back();
     } catch (error: any) {
       Alert.alert('Erreur', error.message);
     } finally {
