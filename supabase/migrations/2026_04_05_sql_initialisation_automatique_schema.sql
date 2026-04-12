@@ -43,10 +43,12 @@ ALTER TABLE profiles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE wallets ENABLE ROW LEVEL SECURITY;
 ALTER TABLE transactions ENABLE ROW LEVEL SECURITY;
 
--- 5. Créer les politiques de sécurité (Exemple pour les profils)
+-- 5. Nettoyage et Création des politiques de sécurité pour les profils
+DROP POLICY IF EXISTS "Les utilisateurs peuvent voir leur propre profil" ON profiles;
 CREATE POLICY "Les utilisateurs peuvent voir leur propre profil" 
 ON profiles FOR SELECT USING (auth.uid() = id);
 
+DROP POLICY IF EXISTS "Les utilisateurs peuvent modifier leur propre profil" ON profiles;
 CREATE POLICY "Les utilisateurs peuvent modifier leur propre profil" 
 ON profiles FOR UPDATE USING (auth.uid() = id);
 
@@ -60,23 +62,29 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql SECURITY DEFINER;
 
-CREATE OR REPLACE TRIGGER on_auth_user_created
+DROP TRIGGER IF EXISTS on_auth_user_created ON auth.users;
+CREATE TRIGGER on_auth_user_created
   AFTER INSERT ON auth.users
   FOR EACH ROW EXECUTE FUNCTION public.handle_new_user();
 
 -- 7. Politiques de sécurité pour les portefeuilles (Wallets)
+DROP POLICY IF EXISTS "Les utilisateurs peuvent voir leurs propres portefeuilles" ON wallets;
 CREATE POLICY "Les utilisateurs peuvent voir leurs propres portefeuilles" 
 ON wallets FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Les utilisateurs peuvent créer leurs propres portefeuilles" ON wallets;
 CREATE POLICY "Les utilisateurs peuvent créer leurs propres portefeuilles" 
 ON wallets FOR INSERT WITH CHECK (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Les utilisateurs peuvent modifier leurs propres portefeuilles" ON wallets;
 CREATE POLICY "Les utilisateurs peuvent modifier leurs propres portefeuilles" 
 ON wallets FOR UPDATE USING (auth.uid() = user_id);
 
 -- 8. Politiques de sécurité pour les transactions
+DROP POLICY IF EXISTS "Les utilisateurs peuvent voir leurs propres transactions" ON transactions;
 CREATE POLICY "Les utilisateurs peuvent voir leurs propres transactions" 
 ON transactions FOR SELECT USING (auth.uid() = user_id);
 
+DROP POLICY IF EXISTS "Les utilisateurs peuvent créer leurs propres transactions" ON transactions;
 CREATE POLICY "Les utilisateurs peuvent créer leurs propres transactions" 
 ON transactions FOR INSERT WITH CHECK (auth.uid() = user_id);
