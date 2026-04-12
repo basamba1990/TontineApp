@@ -1,50 +1,20 @@
-# TontineG-One- Fintech Ultra Premium 🚀
+# TontineCollateral - Transformez l’épargne collective en garantie bancaire
 
-Bienvenue dans la version TGO de **TontineG-One**, une application fintech multi-pays et multi-devises conçue pour offrir une expérience utilisateur premium avec une interface moderne et des fonctionnalités avancées.
+## Structure du projet
+- `/mobile` : App React Native (Expo)
+- `/backend` : Migrations Supabase + Edge Functions
+- `/ai-scoring` : API Python pour le scoring de crédit
+- `/banking-portal` : Dashboard Next.js pour les banques partenaires
 
-## ✨ Fonctionnalités TGO
+## Déploiement
+1. Configurer Supabase (appliquer les migrations)
+2. Déployer les Edge Functions
+3. Lancer l’app mobile avec `cd mobile && npm start`
+4. Lancer le scoring avec `cd ai-scoring && uvicorn main:app --reload`
+5. Déployer le banking-portal sur Vercel
 
-- 📱 **Expo & React Native** : Architecture moderne basée sur Expo Router.
-- 💎 **UI Ultra Premium** : Effets Glassmorphism, animations fluides et retour haptique.
-- 🌍 **Multi-Pays / Multi-Devises** : Support complet pour XOF, EUR, USD, CAD, GBP avec conversion intégrée.
-- ⚡ **Realtime Supabase** : Mises à jour en temps réel des soldes et des transactions.
-- 📊 **Victory Charts** : Visualisations de données animées pour suivre la performance financière.
-- 🔐 **Sécurité Avancée** : Authentification Supabase, Edge Functions pour les opérations sensibles et stockage sécurisé.
-- 🌙 **Dark Mode** : Support complet du mode sombre et clair.
-
-## 🏗️ Structure du Projet
-
-- `app/` : Navigation et pages (Dashboard, Wallets, Transactions, Profil, Dépôt, Retrait, Transfert).
-- `components/` : Composants UI réutilisables (GlassCard, PremiumButton, Chart, etc.).
-- `context/` : Gestion de l'état global (User, Wallet, Transaction).
-- `hooks/` : Hooks personnalisés pour la logique métier.
-- `lib/` : Utilitaires API, thèmes et gestion des devises.
-- `supabase/` : Migrations SQL et Edge Functions.
-- `types/` : Définitions TypeScript pour une robustesse maximale.
-
-## 🚀 Lancement Rapide
-
-1. **Installer les dépendances** :
-   ```bash
-   pnpm install
-   ```
-
-2. **Configurer les variables d'environnement** :
-   Créez un fichier `.env` à la racine :
-   ```env
-   EXPO_PUBLIC_SUPABASE_URL=votre_url_supabase
-   EXPO_PUBLIC_SUPABASE_ANON_KEY=votre_cle_anon_supabase
-   ```
-
-3. **Lancer l'application** :
-   ```bash
-   npx expo start
-   ```
-
-## 🛠️ Configuration Supabase
-
-- Appliquez les migrations situées dans `supabase/migrations/schema.sql` dans votre éditeur SQL Supabase.
-- Déployez les Edge Functions situées dans `supabase/functions/`.
-
----
-Développé avec ❤️ pour une expérience fintech sans compromis.
+## Variables d’environnement
+- `EXPO_PUBLIC_SUPABASE_URL`
+- `EXPO_PUBLIC_SUPABASE_ANON_KEY`
+- `SUPABASE_SERVICE_ROLE_KEY`
+- `MOMO_KEY` (clé API Wave/Orange)
